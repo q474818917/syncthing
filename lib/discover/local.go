@@ -40,7 +40,7 @@ type localClient struct {
 }
 
 const (
-	BroadcastInterval = 30 * time.Second
+	BroadcastInterval = 30 * time.Second	//广播的间隔
 	CacheLifeTime     = 3 * BroadcastInterval
 	Magic             = uint32(0x2EA7D90B) // same as in BEP
 	v13Magic          = uint32(0x7D79BC40) // previous version
@@ -71,18 +71,20 @@ func NewLocal(id protocol.DeviceID, addr string, addrList AddressLister) (Finder
 		if err != nil {
 			return nil, err
 		}
+		//开启接受通告
 		c.startLocalIPv4Broadcasts(bcPort)
 	} else {
 		// A multicast client
 		c.name = "IPv6 local"
 		c.startLocalIPv6Multicasts(addr)
 	}
-
+	//发送通告广播
 	go c.sendLocalAnnouncements()
 
 	return c, nil
 }
 
+//开始本地ipv4广播，进入beacon看源码
 func (c *localClient) startLocalIPv4Broadcasts(localPort int) {
 	c.beacon = beacon.NewBroadcast(localPort)
 	c.Add(c.beacon)

@@ -426,11 +426,12 @@ func main() {
 		return
 	}
 
-	if innerProcess || options.noRestart {
+	/*if innerProcess || options.noRestart {
 		syncthingMain(options)
 	} else {
 		monitorMain(options)
-	}
+	}*/
+	syncthingMain(options)
 }
 
 func openGUI() error {
@@ -635,6 +636,7 @@ func syncthingMain(runtimeOptions RuntimeOptions) {
 	// report the error if there is one.
 	osutil.MaximizeOpenFileLimit()
 
+	//l.Infof("certFile is %s, keyFile is %s", locations.Get(locations.CertFile), locations.Get(locations.KeyFile))
 	// Ensure that we have a certificate and key.
 	cert, err := tls.LoadX509KeyPair(
 		locations.Get(locations.CertFile),
@@ -801,6 +803,7 @@ func syncthingMain(runtimeOptions RuntimeOptions) {
 	connectionsService := connections.NewService(cfg, myID, m, tlsCfg, cachedDiscovery, bepProtocolName, tlsDefaultCommonName)
 	mainService.Add(connectionsService)
 
+	//三种发现模式：ip、local、global
 	if cfg.Options().GlobalAnnEnabled {
 		for _, srv := range cfg.GlobalDiscoveryServers() {
 			l.Infoln("Using discovery server", srv)

@@ -19,6 +19,7 @@ type HelloIntf interface {
 
 // The HelloResult is the non version specific interpretation of the other
 // side's Hello message.
+// Pre-authentication messages,认证前发送的消息，包含三块：1、魔数，2、长度，3、helloResult
 type HelloResult struct {
 	DeviceName    string
 	ClientName    string

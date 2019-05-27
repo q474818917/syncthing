@@ -22,6 +22,8 @@ const (
 	Version13HelloMagic    uint32 = 0x9F79BC40 // old
 )
 
+// 实现HelloIntf接口，
+// 两个函数，Magic：获取HelloMessage魔数，Marshal：
 func (m Hello) Magic() uint32 {
 	return HelloMessageMagic
 }

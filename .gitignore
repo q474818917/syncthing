@@ -10,6 +10,7 @@ stdiscosrv.exe
 coverage.out
 files/pidx
 bin
+.idea
 perfstats*.csv
 coverage.xml
 syncthing.sig

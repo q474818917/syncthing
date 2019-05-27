@@ -90,14 +90,14 @@ var targets = map[string]target{
 		binaryName:  "syncthing", // .exe will be added automatically for Windows builds
 		archiveFiles: []archiveFile{
 			{src: "{{binary}}", dst: "{{binary}}", perm: 0755},
-			{src: "README.md", dst: "README.txt", perm: 0644},
+			{src: "README_en.md", dst: "README.txt", perm: 0644},
 			{src: "LICENSE", dst: "LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "AUTHORS.txt", perm: 0644},
 			// All files from etc/ and extra/ added automatically in init().
 		},
 		installationFiles: []archiveFile{
 			{src: "{{binary}}", dst: "deb/usr/bin/{{binary}}", perm: 0755},
-			{src: "README.md", dst: "deb/usr/share/doc/syncthing/README.txt", perm: 0644},
+			{src: "README_en.md", dst: "deb/usr/share/doc/syncthing/README.txt", perm: 0644},
 			{src: "LICENSE", dst: "deb/usr/share/doc/syncthing/LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "deb/usr/share/doc/syncthing/AUTHORS.txt", perm: 0644},
 			{src: "man/syncthing.1", dst: "deb/usr/share/man/man1/syncthing.1", perm: 0644},
@@ -133,13 +133,13 @@ var targets = map[string]target{
 		binaryName:  "stdiscosrv", // .exe will be added automatically for Windows builds
 		archiveFiles: []archiveFile{
 			{src: "{{binary}}", dst: "{{binary}}", perm: 0755},
-			{src: "cmd/stdiscosrv/README.md", dst: "README.txt", perm: 0644},
+			{src: "cmd/stdiscosrv/README_en.md", dst: "README.txt", perm: 0644},
 			{src: "LICENSE", dst: "LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "AUTHORS.txt", perm: 0644},
 		},
 		installationFiles: []archiveFile{
 			{src: "{{binary}}", dst: "deb/usr/bin/{{binary}}", perm: 0755},
-			{src: "cmd/stdiscosrv/README.md", dst: "deb/usr/share/doc/syncthing-discosrv/README.txt", perm: 0644},
+			{src: "cmd/stdiscosrv/README_en.md", dst: "deb/usr/share/doc/syncthing-discosrv/README.txt", perm: 0644},
 			{src: "LICENSE", dst: "deb/usr/share/doc/syncthing-discosrv/LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "deb/usr/share/doc/syncthing-discosrv/AUTHORS.txt", perm: 0644},
 			{src: "man/stdiscosrv.1", dst: "deb/usr/share/man/man1/stdiscosrv.1", perm: 0644},
@@ -155,14 +155,14 @@ var targets = map[string]target{
 		binaryName:  "strelaysrv", // .exe will be added automatically for Windows builds
 		archiveFiles: []archiveFile{
 			{src: "{{binary}}", dst: "{{binary}}", perm: 0755},
-			{src: "cmd/strelaysrv/README.md", dst: "README.txt", perm: 0644},
+			{src: "cmd/strelaysrv/README_en.md", dst: "README.txt", perm: 0644},
 			{src: "cmd/strelaysrv/LICENSE", dst: "LICENSE.txt", perm: 0644},
 			{src: "LICENSE", dst: "LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "AUTHORS.txt", perm: 0644},
 		},
 		installationFiles: []archiveFile{
 			{src: "{{binary}}", dst: "deb/usr/bin/{{binary}}", perm: 0755},
-			{src: "cmd/strelaysrv/README.md", dst: "deb/usr/share/doc/syncthing-relaysrv/README.txt", perm: 0644},
+			{src: "cmd/strelaysrv/README_en.md", dst: "deb/usr/share/doc/syncthing-relaysrv/README.txt", perm: 0644},
 			{src: "cmd/strelaysrv/LICENSE", dst: "deb/usr/share/doc/syncthing-relaysrv/LICENSE.txt", perm: 0644},
 			{src: "LICENSE", dst: "deb/usr/share/doc/syncthing-relaysrv/LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "deb/usr/share/doc/syncthing-relaysrv/AUTHORS.txt", perm: 0644},
@@ -178,13 +178,13 @@ var targets = map[string]target{
 		binaryName:  "strelaypoolsrv", // .exe will be added automatically for Windows builds
 		archiveFiles: []archiveFile{
 			{src: "{{binary}}", dst: "{{binary}}", perm: 0755},
-			{src: "cmd/strelaypoolsrv/README.md", dst: "README.txt", perm: 0644},
+			{src: "cmd/strelaypoolsrv/README_en.md", dst: "README.txt", perm: 0644},
 			{src: "cmd/strelaypoolsrv/LICENSE", dst: "LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "AUTHORS.txt", perm: 0644},
 		},
 		installationFiles: []archiveFile{
 			{src: "{{binary}}", dst: "deb/usr/bin/{{binary}}", perm: 0755},
-			{src: "cmd/strelaypoolsrv/README.md", dst: "deb/usr/share/doc/syncthing-relaypoolsrv/README.txt", perm: 0644},
+			{src: "cmd/strelaypoolsrv/README_en.md", dst: "deb/usr/share/doc/syncthing-relaypoolsrv/README.txt", perm: 0644},
 			{src: "cmd/strelaypoolsrv/LICENSE", dst: "deb/usr/share/doc/syncthing-relaypoolsrv/LICENSE.txt", perm: 0644},
 			{src: "AUTHORS", dst: "deb/usr/share/doc/syncthing-relaypoolsrv/AUTHORS.txt", perm: 0644},
 		},

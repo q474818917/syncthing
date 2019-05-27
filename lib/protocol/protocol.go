@@ -131,6 +131,7 @@ var (
 	errFileHasNoBlocks      = errors.New("file with empty block list")
 )
 
+//定义了messageType操作接口，实现在model.go中
 type Model interface {
 	// An index was received from the peer device
 	Index(deviceID DeviceID, folder string, files []FileInfo)
@@ -236,6 +237,7 @@ func NewConnection(deviceID DeviceID, reader io.Reader, writer io.Writer, receiv
 
 // Start creates the goroutines for sending and receiving of messages. It must
 // be called exactly once after creating a connection.
+// 连接后必须被调用一次
 func (c *rawConnection) Start() {
 	go func() {
 		err := c.readerLoop()
@@ -254,7 +256,7 @@ func (c *rawConnection) Name() string {
 	return c.name
 }
 
-// Index writes the list of file information to the connected peer device
+// Index writes the list of file information to the connected peer device，发送Index消息
 func (c *rawConnection) Index(folder string, idx []FileInfo) error {
 	select {
 	case <-c.closed:
@@ -270,7 +272,7 @@ func (c *rawConnection) Index(folder string, idx []FileInfo) error {
 	return nil
 }
 
-// IndexUpdate writes the list of file information to the connected peer device as an update
+// IndexUpdate writes the list of file information to the connected peer device as an update，发送IndexUpdate消息
 func (c *rawConnection) IndexUpdate(folder string, idx []FileInfo) error {
 	select {
 	case <-c.closed:
@@ -286,7 +288,7 @@ func (c *rawConnection) IndexUpdate(folder string, idx []FileInfo) error {
 	return nil
 }
 
-// Request returns the bytes for the specified block after fetching them from the connected peer.
+// Request returns the bytes for the specified block after fetching them from the connected peer.发送Request消息
 func (c *rawConnection) Request(folder string, name string, offset int64, size int, hash []byte, weakHash uint32, fromTemporary bool) ([]byte, error) {
 	c.nextIDMut.Lock()
 	id := c.nextID
@@ -322,7 +324,7 @@ func (c *rawConnection) Request(folder string, name string, offset int64, size i
 	return res.val, res.err
 }
 
-// ClusterConfig send the cluster configuration message to the peer and returns any error
+// ClusterConfig send the cluster configuration message to the peer and returns any error，发送ClusterConfig消息
 func (c *rawConnection) ClusterConfig(config ClusterConfig) {
 	c.send(&config, nil)
 }
@@ -348,6 +350,7 @@ func (c *rawConnection) ping() bool {
 	return c.send(&Ping{}, nil)
 }
 
+// 事件发生入口
 func (c *rawConnection) readerLoop() (err error) {
 	fourByteBuf := make([]byte, 4)
 	state := stateInitial

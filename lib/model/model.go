@@ -946,6 +946,7 @@ func (m *model) RemoteNeedFolderFiles(device protocol.DeviceID, folder string, p
 
 // Index is called when a new device is connected and we receive their full index.
 // Implements the protocol.Model interface.
+// 当设备连接并且接收全部index，此方法被调用
 func (m *model) Index(deviceID protocol.DeviceID, folder string, fs []protocol.FileInfo) {
 	m.handleIndex(deviceID, folder, fs, false)
 }
@@ -2083,7 +2084,7 @@ func (m *model) numHashers(folder string) int {
 }
 
 // generateClusterConfig returns a ClusterConfigMessage that is correct for
-// the given peer device
+// the given peer device,返回给定节点的ClusterConfig message
 func (m *model) generateClusterConfig(device protocol.DeviceID) protocol.ClusterConfig {
 	var message protocol.ClusterConfig
 

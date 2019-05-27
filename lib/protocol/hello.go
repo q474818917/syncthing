@@ -35,6 +35,7 @@ var (
 	ErrUnknownMagic = errors.New("the remote device speaks an unknown (newer?) version of the protocol")
 )
 
+//pre-authentication,交换Hello message
 func ExchangeHello(c io.ReadWriter, h HelloIntf) (HelloResult, error) {
 	if err := writeHello(c, h); err != nil {
 		return HelloResult{}, err

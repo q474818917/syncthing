@@ -21,3 +21,22 @@ syncthingMain(options)
 + 建立tcp连接，执行tls握手，需要执行一些验证操作
 
 ### 关于[BEP协议](BEP.md)
++ 连接监听代码：
+```$xslt
+①func (m *model) AddConnection
+↓
+②conn.Start() = (rawConnection.Start)
+↓
+③调用收发消息核心
+func (c *rawConnection) Start() {
+	go func() {
+		err := c.readerLoop()
+		c.internalClose(err)
+	}()
+	go c.writerLoop()
+	go c.pingSender()
+	go c.pingReceiver()
+}
+↓
+④下面就是writerLoop、readerLoop按照事件去处理
+```

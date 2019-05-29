@@ -777,6 +777,7 @@ func syncthingMain(runtimeOptions RuntimeOptions) {
 			folderCfg.CreateRoot()
 			continue
 		}
+
 		m.AddFolder(folderCfg)
 		m.StartFolder(folderCfg.ID)
 	}

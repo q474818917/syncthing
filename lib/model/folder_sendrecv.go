@@ -135,7 +135,7 @@ func newSendReceiveFolder(model *model, fset *db.FileSet, ignores *ignore.Matche
 }
 
 // pull returns true if it manages to get all needed items from peers, i.e. get
-// the device in sync with the global state.
+// the device in sync with the global state. 实现了folder下的puller接口
 func (f *sendReceiveFolder) pull() bool {
 	select {
 	case <-f.initialScanFinished:

@@ -1,6 +1,5 @@
 ## syncthing
 
-+ 关于Erlang语言中的supervisor trees，参照http://diaocow.iteye.com/blog/1762895
 + 调试将
 ```$xslt
 if innerProcess || options.noRestart {
@@ -11,6 +10,10 @@ if innerProcess || options.noRestart {
 替换成
 syncthingMain(options)
 ```
+
+### 依赖列表
++ 关于Erlang语言中的supervisor trees，参照http://diaocow.iteye.com/blog/1762895
++ 
 
 ### 连接步骤
 + 添加deviceID
@@ -39,4 +42,27 @@ func (c *rawConnection) Start() {
 }
 ↓
 ④下面就是writerLoop、readerLoop按照事件去处理
+```
+
++ supervisor服务启动,folder实现suture的service接口。服务启动时就会调用各个实现Serve()方法
+```$xslt
+folder、
+```
+
+### 文件夹三种同步方式：
++ 默认：sendreceive
++ sendonly
++ recvonly
+```$xslt
+①folder.go //监控文件夹，通过文件系统和定时任务实现
+if f.FSWatcherEnabled && f.CheckHealth() == nil {
+    f.startWatch()
+}
+↓
+②filesystem.go //实现了Watch方法的 basicfs_watch.go
+eventChan, err := f.Filesystem().Watch(".", f.ignores, ctx, f.IgnorePerms)
+↓
+③basicfs_watch.go
+func (f *BasicFilesystem) Watch(name string, ignore Matcher, ctx context.Context, ignorePerms bool) (<-chan Event, error) {
+
 ```

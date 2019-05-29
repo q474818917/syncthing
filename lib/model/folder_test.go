@@ -7,12 +7,11 @@
 package model
 
 import (
+	"github.com/d4l3k/messagediff"
+	"github.com/syncthing/syncthing/lib/config"
 	"path/filepath"
 	"runtime"
 	"testing"
-
-	"github.com/d4l3k/messagediff"
-	"github.com/syncthing/syncthing/lib/config"
 )
 
 type unifySubsCase struct {
@@ -148,3 +147,5 @@ func BenchmarkUnifySubs(b *testing.B) {
 		}
 	}
 }
+
+

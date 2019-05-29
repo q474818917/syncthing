@@ -617,11 +617,11 @@ func (f *folder) startWatch() {
 // startWatchAsync tries to start the filesystem watching and retries every minute on failure.
 // It is a convenience function that should not be used except in startWatch.
 func (f *folder) startWatchAsync(ctx context.Context) {
-	timer := time.NewTimer(0)
+	timer := time.NewTimer(0)		//过渡期为0 ，则即刻将值放入time.C channel
 	for {
 		select {
 		case <-timer.C:
-			eventChan, err := f.Filesystem().Watch(".", f.ignores, ctx, f.IgnorePerms)
+			eventChan, err := f.Filesystem().Watch(".", f.ignores, ctx, f.IgnorePerms)	//path=.是代表的工作目录，不是当前文件所在目录
 			f.watchMut.Lock()
 			prevErr := f.watchErr
 			f.watchErr = err

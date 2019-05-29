@@ -315,7 +315,7 @@ func (m *model) startFolderLocked(cfg config.FolderConfiguration) {
 
 	m.warnAboutOverwritingProtectedFiles(folder)
 
-	token := m.Add(p)
+	token := m.Add(p)		//add folder_sendrecv
 	m.folderRunnerTokens[folder] = append(m.folderRunnerTokens[folder], token)
 }
 

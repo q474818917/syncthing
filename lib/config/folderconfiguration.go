@@ -25,6 +25,7 @@ var (
 
 const DefaultMarkerName = ".stfolder"
 
+//对应config.xml 下的folder标签
 type FolderConfiguration struct {
 	ID                      string                      `xml:"id,attr" json:"id"`
 	Label                   string                      `xml:"label,attr" json:"label" restart:"false"`
@@ -62,6 +63,7 @@ type FolderConfiguration struct {
 	DeprecatedPullers        int     `xml:"pullers,omitempty" json:"-"`
 }
 
+//包含在父标签folder中的device标签
 type FolderDeviceConfiguration struct {
 	DeviceID     protocol.DeviceID `xml:"id,attr" json:"deviceID"`
 	IntroducedBy protocol.DeviceID `xml:"introducedBy,attr" json:"introducedBy"`

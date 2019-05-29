@@ -38,7 +38,7 @@ func (f *BasicFilesystem) Watch(name string, ignore Matcher, ctx context.Context
 		absShouldIgnore := func(absPath string) bool {
 			return ignore.ShouldIgnore(f.unrootedChecked(absPath, root))
 		}
-		err = notify.WatchWithFilter(watchPath, backendChan, absShouldIgnore, eventMask)
+		err = notify.WatchWithFilter(watchPath, backendChan, absShouldIgnore, eventMask)	//这里的eventMask代表：notify.All，也就是文件所有操作都会通知到backendChan
 	} else {
 		err = notify.Watch(watchPath, backendChan, eventMask)
 	}

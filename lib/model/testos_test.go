@@ -80,3 +80,4 @@ func (f *fatalOs) Stat(name string) os.FileInfo {
 	must(f, err)
 	return info
 }
+

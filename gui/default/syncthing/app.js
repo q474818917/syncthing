@@ -154,7 +154,7 @@ function buildTree(children) {
     */
     var root = {
         children: []
-    }
+    };
 
     $.each(children, function (path, data) {
         var parts = path.split('/');
@@ -247,4 +247,4 @@ function unitPrefixed(input, binary) {
         return input.toLocaleString(undefined, { maximumSignificantDigits: 3 }) + prefix + i;
     }
     return Math.round(input).toLocaleString() + ' ';
-};
+}

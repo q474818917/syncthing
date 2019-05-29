@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	lz4 "github.com/bkaradzic/go-lz4"
+	"github.com/bkaradzic/go-lz4"
 )
 
 const (

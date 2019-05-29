@@ -17,7 +17,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	metrics "github.com/rcrowley/go-metrics"
+	"github.com/rcrowley/go-metrics"
 	"github.com/syncthing/syncthing/lib/events"
 	"github.com/syncthing/syncthing/lib/fs"
 	"github.com/syncthing/syncthing/lib/ignore"
@@ -517,7 +517,7 @@ func (w *walker) updateFileInfo(file, curFile protocol.FileInfo) protocol.FileIn
 	if file.Type == protocol.FileInfoTypeFile && runtime.GOOS == "windows" {
 		// If we have an existing index entry, copy the executable bits
 		// from there.
-		file.Permissions |= (curFile.Permissions & 0111)
+		file.Permissions |= curFile.Permissions & 0111
 	}
 	file.Version = curFile.Version.Update(w.ShortID)
 	file.ModifiedBy = w.ShortID

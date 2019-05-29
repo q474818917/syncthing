@@ -1905,6 +1905,7 @@ func sendIndexes(conn protocol.Connection, folder string, fs *db.FileSet, prevSe
 		// time to batch them up a little.
 		time.Sleep(250 * time.Millisecond)
 	}
+	l.Infof("....%s", "1")
 }
 
 // sendIndexTo sends file infos with a sequence number higher than prevSequence and

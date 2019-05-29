@@ -10,7 +10,7 @@ import (
 	"crypto/tls"
 	"encoding/binary"
 	"fmt"
-	io "io"
+	"io"
 	"log"
 	"net"
 	"time"

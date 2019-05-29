@@ -20,7 +20,7 @@ import (
 	"github.com/syncthing/syncthing/lib/rand"
 	"github.com/syncthing/syncthing/lib/sync"
 	"golang.org/x/crypto/bcrypt"
-	ldap "gopkg.in/ldap.v2"
+	"gopkg.in/ldap.v2"
 )
 
 var (

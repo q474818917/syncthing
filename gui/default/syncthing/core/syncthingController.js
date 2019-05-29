@@ -640,8 +640,7 @@ angular.module('syncthing.core')
                     cb();
                 }
             });
-        };
-
+        }
         $scope.neededPageChanged = function (page) {
             $scope.neededCurrentPage = page;
             refreshNeed($scope.neededFolder);
@@ -859,7 +858,7 @@ angular.module('syncthing.core')
             var res = [];
             if (seconds >= 86400) {
                 days = Math.floor(seconds / 86400);
-                res.push('' + days + 'd')
+                res.push('' + days + 'd');
                 seconds = seconds % 86400;
             }
 
@@ -867,7 +866,7 @@ angular.module('syncthing.core')
             var hours = 0;
             if (seconds > 3600) {
                 hours = Math.floor(seconds / 3600);
-                res.push('' + hours + 'h')
+                res.push('' + hours + 'h');
                 seconds = seconds % 3600;
             }
 
@@ -1098,7 +1097,7 @@ angular.module('syncthing.core')
                             description: value,
                             enabled: data.enabled.indexOf(key) > -1
                         }
-                    })
+                    });
                     $scope.logging.facilities = facilities;
                 }).error($scope.emitHTTPError);
             },
@@ -1122,7 +1121,7 @@ angular.module('syncthing.core')
                 // Disable checkboxes while we're in flight.
                 $.each($scope.logging.facilities, function (key) {
                     $scope.logging.facilities[key].enabled = null;
-                })
+                });
                 $http.post(urlbase + '/system/debug?' + (enabled ? 'enable=' : 'disable=') + facility)
                     .success($scope.logging.refreshFacilities)
                     .error($scope.emitHTTPError);
@@ -1566,7 +1565,7 @@ angular.module('syncthing.core')
         };
 
         $scope.fsWatcherErrorMap = function () {
-            var errs = {}
+            var errs = {};
             $.each($scope.folders, function (id, cfg) {
                 if (cfg.fsWatcherEnabled && $scope.model[cfg.id] && $scope.model[id].watchError && !cfg.paused && $scope.folderStatus(cfg) !== 'stopped') {
                     errs[id] = $scope.model[id].watchError;
@@ -1826,15 +1825,13 @@ angular.module('syncthing.core')
             }
             if (!$scope.editingExisting && ignores.length) {
                 folderCfg.paused = true;
-            };
-
+            }
             $scope.folders[folderCfg.id] = folderCfg;
             $scope.config.folders = folderList($scope.folders);
 
             if (ignoresLoaded && $scope.editingExisting && ignores !== folderCfg.ignores) {
                 saveIgnores(ignores);
-            };
-
+            }
             $scope.saveConfig(function () {
                 if (!$scope.editingExisting && ignores.length) {
                     saveIgnores(ignores, function () {
@@ -1923,7 +1920,7 @@ angular.module('syncthing.core')
                             var availableVersions = [];
                             $.each($scope.restoreVersions.filterVersions($scope.restoreVersions.versions[key]), function (idx, version) {
                                 availableVersions.push(version.versionTime);
-                            })
+                            });
 
                             if (availableVersions.length) {
                                 availableVersions.sort(function (a, b) { return a - b; });
@@ -2412,7 +2409,7 @@ angular.module('syncthing.core')
             if (!status || !status.error) {
                 return null;
             }
-            var time = $filter('date')(status.when, "HH:mm:ss")
+            var time = $filter('date')(status.when, "HH:mm:ss");
             var err = status.error.replace(/.+: /, '');
             return err + " (" + time + ")";
         }

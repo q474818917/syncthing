@@ -10,7 +10,7 @@ import (
 	"math"
 	"time"
 
-	metrics "github.com/rcrowley/go-metrics"
+	"github.com/rcrowley/go-metrics"
 )
 
 const cpuTickRate = 5 * time.Second

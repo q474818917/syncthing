@@ -11,6 +11,8 @@ if innerProcess || options.noRestart {
 syncthingMain(options)
 ```
 
++ 显示debug日志，在idea下environment设置STTRACE=model，然后debug go build github.com/syncthing/syncthing/cmd/syncthing 
+
 ### 依赖列表
 + 关于Erlang语言中的supervisor trees，参照http://diaocow.iteye.com/blog/1762895
 + 
@@ -46,7 +48,16 @@ func (c *rawConnection) Start() {
 
 + supervisor服务启动,folder实现suture的service接口。服务启动时就会调用各个实现Serve()方法
 ```$xslt
-folder、
+① folder.go
+case <-f.pullScheduled:
+    pullFailTimer.Stop()
+    select {
+    case <-pullFailTimer.C:
+    default:
+    }
+    pull()
+↓
+
 ```
 
 ### 文件夹三种同步方式：
@@ -64,5 +75,8 @@ eventChan, err := f.Filesystem().Watch(".", f.ignores, ctx, f.IgnorePerms)
 ↓
 ③basicfs_watch.go
 func (f *BasicFilesystem) Watch(name string, ignore Matcher, ctx context.Context, ignorePerms bool) (<-chan Event, error) {
+
+case outChan <- Event{Name: relPath, Type: evType}://发送文件Chan
+
 
 ```

@@ -27,7 +27,7 @@ func (f *BasicFilesystem) Watch(name string, ignore Matcher, ctx context.Context
 	}
 
 	outChan := make(chan Event)
-	backendChan := make(chan notify.EventInfo, backendBuffer)
+	backendChan := make(chan notify.EventInfo, backendBuffer)	//500length的Chan
 
 	eventMask := subEventMask
 	if !ignorePerms {
@@ -52,12 +52,13 @@ func (f *BasicFilesystem) Watch(name string, ignore Matcher, ctx context.Context
 
 	go f.watchLoop(name, root, backendChan, outChan, ignore, ctx)
 
+	//此处已返回，捕捉不到
 	return outChan, nil
 }
 
 func (f *BasicFilesystem) watchLoop(name, evalRoot string, backendChan chan notify.EventInfo, outChan chan<- Event, ignore Matcher, ctx context.Context) {
 	for {
-		// Detect channel overflow
+		// Detect channel overflow,这里防止chan溢出
 		if len(backendChan) == backendBuffer {
 		outer:
 			for {

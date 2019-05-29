@@ -29,7 +29,7 @@ import (
 	"unicode"
 
 	"github.com/lib/pq"
-	geoip2 "github.com/oschwald/geoip2-golang"
+	"github.com/oschwald/geoip2-golang"
 )
 
 var (

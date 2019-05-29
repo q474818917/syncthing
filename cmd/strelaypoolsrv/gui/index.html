@@ -248,7 +248,7 @@
         return 1;
       }
       return a.value > b.value ? 1 : -1;
-    }
+    };
 
     $http.get("/endpoint").then(function(response) {
       $scope.relays = response.data.relays;
@@ -315,11 +315,11 @@
 
         relay.showMarker = function() {
           relay.marker.info.open($scope.map, relay.marker);
-        }
+        };
 
         relay.hideMarker = function() {
           relay.marker.info.close();
-        }
+        };
 
         relay.marker.addListener('mouseover', relay.showMarker);
         relay.marker.addListener('mouseout', relay.hideMarker);

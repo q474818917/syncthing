@@ -1880,6 +1880,7 @@ func sendIndexes(conn protocol.Connection, folder string, fs *db.FileSet, prevSe
 	// Subscribe to LocalIndexUpdated (we have new information to send) and
 	// DeviceDisconnected (it might be us who disconnected, so we should
 	// exit).
+	// 订阅了两个events：localIndexUpdated，deviceDisconnected
 	sub := events.Default.Subscribe(events.LocalIndexUpdated | events.DeviceDisconnected)
 	defer events.Default.Unsubscribe(sub)
 

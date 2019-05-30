@@ -33,6 +33,7 @@ type ProgressEmitter struct {
 
 // NewProgressEmitter creates a new progress emitter which emits
 // DownloadProgress events every interval.
+// 间隔发送DownloadProgress 事件
 func NewProgressEmitter(cfg config.Wrapper) *ProgressEmitter {
 	t := &ProgressEmitter{
 		stop:               make(chan struct{}),

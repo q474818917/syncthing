@@ -18,6 +18,7 @@ import (
 	"github.com/syncthing/syncthing/lib/sync"
 )
 
+// 针对每个文件的共享的puller，保存在当前文件的：已经拉取了多少block，还剩多少block等等
 // A sharedPullerState is kept for each file that is being synced and is kept
 // updated along the way.
 type sharedPullerState struct {

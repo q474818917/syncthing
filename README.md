@@ -13,9 +13,11 @@ syncthingMain(options)
 
 + 显示debug日志，在idea下environment设置STTRACE=model，然后debug go build github.com/syncthing/syncthing/cmd/syncthing 
 
++ 拉取过程中会产生.xxx.tmp的中间文件
+
 ### 依赖列表
 + 关于Erlang语言中的supervisor trees，参照http://diaocow.iteye.com/blog/1762895
-+ 
++ 文件系统通知库，github.com/syncthing/notify
 
 ### 连接步骤
 + 添加deviceID
@@ -25,10 +27,11 @@ syncthingMain(options)
     + 3、使用global discovery
 + 建立tcp连接，执行tls握手，需要执行一些验证操作
 
-### 关于[BEP协议](BEP.md)
-+ 连接监听代码：
+### 关于[BEP协议](doc/BEP.md), 详细的[messageType交互](doc/message exchange.md)
++ 核心连接监听代码：
 ```$xslt
-①func (m *model) AddConnection
+①model.go
+func (m *model) AddConnection
 ↓
 ②conn.Start() = (rawConnection.Start)
 ↓
@@ -78,5 +81,6 @@ func (f *BasicFilesystem) Watch(name string, ignore Matcher, ctx context.Context
 
 case outChan <- Event{Name: relPath, Type: evType}://发送文件Chan
 
-
 ```
+
+### 事件订阅：

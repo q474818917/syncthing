@@ -18,6 +18,7 @@ syncthingMain(options)
 ### 依赖列表
 + 关于Erlang语言中的supervisor trees，参照http://diaocow.iteye.com/blog/1762895
 + 文件系统通知库，github.com/syncthing/notify
++ go项目的leveldb库，github.com/syndtr/goleveldb
 
 ### 连接步骤
 + 添加deviceID

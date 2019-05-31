@@ -37,6 +37,7 @@ var (
 	blockStatsMut = sync.NewMutex()
 )
 
+// 自动调用
 func init() {
 	folderFactories[config.FolderTypeSendReceive] = newSendReceiveFolder
 }
@@ -115,7 +116,7 @@ func newSendReceiveFolder(model *model, fset *db.FileSet, ignores *ignore.Matche
 		queue:         newJobQueue(),
 		pullErrorsMut: sync.NewMutex(),
 	}
-	f.folder.puller = f
+	f.folder.puller = f		//sendReceiveFolder实现了puller的pull接口，sendReceiveFolder也就是一个puller
 
 	if f.Copiers == 0 {
 		f.Copiers = defaultCopiers

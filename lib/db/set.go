@@ -23,6 +23,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb/util"
 )
 
+//文件目录下的文件集合
 type FileSet struct {
 	folder string
 	fs     fs.Filesystem

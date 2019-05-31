@@ -165,7 +165,7 @@ func (f *folder) Serve() {
 		case <-pullFailTimer.C:
 			pull()
 
-		case <-initialCompleted:
+		case <-initialCompleted:		//close(f.initialCompleted) 会触发此case
 			// Initial scan has completed, we should do a pull
 			initialCompleted = nil // never hit this case again
 			if !f.puller.pull() {
@@ -541,6 +541,7 @@ func (f *folder) scanSubdirs(subDirs []string) error {
 	return nil
 }
 
+//调用scanSubdirs完成初始化扫描文件目录
 func (f *folder) scanTimerFired() {
 	err := f.scanSubdirs(nil)
 

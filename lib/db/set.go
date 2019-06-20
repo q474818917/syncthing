@@ -27,7 +27,7 @@ import (
 type FileSet struct {
 	folder string
 	fs     fs.Filesystem
-	db     *instance
+	db     *instance		 	// 文件信息存储-FileInfo
 	meta   *metadataTracker
 
 	updateMutex sync.Mutex // protects database updates and the corresponding metadata changes

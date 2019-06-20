@@ -79,6 +79,7 @@ func (w lockedWriterAt) WriteAt(p []byte, off int64) (n int, err error) {
 
 // tempFile returns the fd for the temporary file, reusing an open fd
 // or creating the file as necessary.
+// 返回当前文件描述符的暂存文件
 func (s *sharedPullerState) tempFile() (io.WriterAt, error) {
 	s.mut.Lock()
 	defer s.mut.Unlock()
@@ -240,20 +241,22 @@ func (s *sharedPullerState) copiedFromOriginShifted() {
 	s.mut.Unlock()
 }
 
+//拉取开始，状态设置
 func (s *sharedPullerState) pullStarted() {
 	s.mut.Lock()
 	s.copyTotal--
 	s.copyNeeded--
 	s.pullTotal++
-	s.pullNeeded++
+	s.pullNeeded++		//拉取编号越来越大
 	s.updated = time.Now()
 	l.Debugln("sharedPullerState", s.folder, s.file.Name, "pullNeeded start ->", s.pullNeeded)
 	s.mut.Unlock()
 }
 
+//拉取完成，状态设置
 func (s *sharedPullerState) pullDone(block protocol.BlockInfo) {
 	s.mut.Lock()
-	s.pullNeeded--
+	s.pullNeeded--		//拉取一个少一个
 	s.updated = time.Now()
 	s.available = append(s.available, int32(block.Offset/int64(s.file.BlockSize())))
 	s.availableUpdated = time.Now()

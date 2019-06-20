@@ -143,7 +143,7 @@ type model struct {
 	clientName    string
 	clientVersion string
 
-	fmut               sync.RWMutex                                           // protects the below
+	fmut               sync.RWMutex                                           // protects the below，锁下面
 	folderCfgs         map[string]config.FolderConfiguration                  // folder -> cfg
 	folderFiles        map[string]*db.FileSet                                 // folder -> files
 	deviceStatRefs     map[protocol.DeviceID]*stats.DeviceStatisticsReference // deviceID -> statsRef
@@ -152,7 +152,7 @@ type model struct {
 	folderRunnerTokens map[string][]suture.ServiceToken                       // folder -> tokens for puller or scanner
 	folderRestartMuts  syncMutexMap                                           // folder -> restart mutex
 
-	pmut                sync.RWMutex // protects the below
+	pmut                sync.RWMutex // protects the below，锁下面
 	conn                map[protocol.DeviceID]connections.Connection
 	connRequestLimiters map[protocol.DeviceID]*byteSemaphore
 	closed              map[protocol.DeviceID]chan struct{}
@@ -784,6 +784,7 @@ func (m *model) ReceiveOnlyChangedSize(folder string) db.Counts {
 }
 
 // NeedSize returns the number and total size of currently needed files.
+// 返回当前需要文件的大小
 func (m *model) NeedSize(folder string) db.Counts {
 	m.fmut.RLock()
 	rf, ok := m.folderFiles[folder]
@@ -2358,7 +2359,7 @@ func (m *model) Availability(folder string, file protocol.FileInfo, block protoc
 
 	fs, ok := m.folderFiles[folder]
 	cfg := m.folderCfgs[folder]
-	m.fmut.RUnlock()
+	m.fmut.RUnlock()		//放开锁
 
 	if !ok {
 		return nil

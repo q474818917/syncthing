@@ -19,6 +19,7 @@ syncthingMain(options)
 + 关于Erlang语言中的supervisor trees，参照http://diaocow.iteye.com/blog/1762895
 + 文件系统通知库，github.com/syncthing/notify
 + go项目的leveldb库，github.com/syndtr/goleveldb
++ 从一个字符串中查找给定字符串，github.com/chmduquesne/rollinghash
 
 ### 连接步骤
 + 添加deviceID
@@ -85,3 +86,15 @@ case outChan <- Event{Name: relPath, Type: evType}://发送文件Chan
 ```
 
 ### 事件订阅：
+
+### 文件大小：
++ 可以通过以下命令查看文件字节大小
+```$xslt
+ls -l -k
+```
+
++ wiki上有个区段表，如果目标文件大小在0 - 250 MiB，则每个区块的最大传输为128 KiB
+```$xslt
+例如：196426字节的文件，按每块128KiB切分，第一块也就是128*1024（131072），第二块用总数-第一块（65354）
+
+```

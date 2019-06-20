@@ -53,7 +53,7 @@ type pullBlockState struct {
 // copied.
 type copyBlocksState struct {
 	*sharedPullerState
-	blocks []protocol.BlockInfo
+	blocks []protocol.BlockInfo		//文件大小按对应传输比例切割blocks
 	have   int
 }
 
@@ -139,7 +139,7 @@ func newSendReceiveFolder(model *model, fset *db.FileSet, ignores *ignore.Matche
 // the device in sync with the global state. 实现了folder下的puller接口
 func (f *sendReceiveFolder) pull() bool {
 	select {
-	case <-f.initialScanFinished:
+	case <-f.initialScanFinished:		//当initialScanFinished关闭时，就不会走到default
 	default:
 		// Once the initial scan finished, a pull will be scheduled
 		return true
@@ -173,6 +173,7 @@ func (f *sendReceiveFolder) pull() bool {
 		return false
 	}
 
+	//如果走到此处，代表接收到消息，开始拉取
 	l.Debugf("%v pulling", f)
 
 	f.setState(FolderSyncing)
@@ -223,6 +224,7 @@ func (f *sendReceiveFolder) pull() bool {
 // returns the number items that should have been synced (even those that
 // might have failed). One puller iteration handles all files currently
 // flagged as needed in the folder.
+// 对于给定的文件夹运行单个puller，并且返回已经同步的数
 func (f *sendReceiveFolder) pullerIteration(scanChan chan<- string) int {
 	pullChan := make(chan pullBlockState)
 	copyChan := make(chan copyBlocksState)
@@ -236,6 +238,7 @@ func (f *sendReceiveFolder) pullerIteration(scanChan chan<- string) int {
 
 	l.Debugln(f, "copiers:", f.Copiers, "pullerPendingKiB:", f.PullerMaxPendingKiB)
 
+	//更新db
 	updateWg.Add(1)
 	go func() {
 		// dbUpdaterRoutine finishes when dbUpdateChan is closed
@@ -243,6 +246,7 @@ func (f *sendReceiveFolder) pullerIteration(scanChan chan<- string) int {
 		updateWg.Done()
 	}()
 
+	//文件拷贝
 	for i := 0; i < f.Copiers; i++ {
 		copyWg.Add(1)
 		go func() {
@@ -318,7 +322,7 @@ func (f *sendReceiveFolder) processNeeded(dbUpdateChan chan<- dbUpdateJob, copyC
 
 		file := intf.(protocol.FileInfo)
 
-		switch {
+		switch {	//无条件，case后为true则执行
 		case f.ignores.ShouldIgnore(file.Name):
 			f.resetPullError(file.Name)
 			file.SetIgnored(f.shortID)
@@ -499,6 +503,7 @@ nextFile:
 }
 
 func (f *sendReceiveFolder) processDeletions(fileDeletions map[string]protocol.FileInfo, dirDeletions []protocol.FileInfo, dbUpdateChan chan<- dbUpdateJob, scanChan chan<- string) {
+	// 处理文件删除，fileDeletions: 文件名：FileInfo
 	for _, file := range fileDeletions {
 		select {
 		case <-f.ctx.Done():
@@ -510,6 +515,7 @@ func (f *sendReceiveFolder) processDeletions(fileDeletions map[string]protocol.F
 		f.deleteFile(file, dbUpdateChan, scanChan)
 	}
 
+	// 处理目录删除
 	// Process in reverse order to delete depth first
 	for i := range dirDeletions {
 		select {
@@ -808,8 +814,10 @@ func (f *sendReceiveFolder) deleteDir(file protocol.FileInfo, dbUpdateChan chan<
 func (f *sendReceiveFolder) deleteFile(file protocol.FileInfo, dbUpdateChan chan<- dbUpdateJob, scanChan chan<- string) {
 	cur, hasCur := f.fset.Get(protocol.LocalDeviceID, file.Name)
 	f.deleteFileWithCurrent(file, cur, hasCur, dbUpdateChan, scanChan)
+	// cur是根据fileName从db中检出的FileInfo， file是当前要删除文件的FileInfo
 }
 
+// 当远程device删除文件后，会调用此方法
 func (f *sendReceiveFolder) deleteFileWithCurrent(file, cur protocol.FileInfo, hasCur bool, dbUpdateChan chan<- dbUpdateJob, scanChan chan<- string) {
 	// Used in the defer closure below, updated by the function body. Take
 	// care not declare another err.
@@ -868,11 +876,13 @@ func (f *sendReceiveFolder) deleteFileWithCurrent(file, cur protocol.FileInfo, h
 	if f.versioner != nil && !cur.IsSymlink() {
 		err = osutil.InWritableDir(f.versioner.Archive, f.fs, file.Name)
 	} else {
+		// 物理删除文件操作
 		err = osutil.InWritableDir(f.fs.Remove, f.fs, file.Name)
 	}
 
 	if err == nil || fs.IsNotExist(err) {
 		// It was removed or it doesn't exist to start with
+		// 文件被删除后，放入到chan中
 		dbUpdateChan <- dbUpdateJob{file, dbUpdateDeleteFile}
 		return
 	}
@@ -1214,6 +1224,7 @@ func (f *sendReceiveFolder) shortcutFile(file, curFile protocol.FileInfo, dbUpda
 
 // copierRoutine reads copierStates until the in channel closes and performs
 // the relevant copies when possible, or passes it to the puller routine.
+// 读取copyBlocksState直到chan关闭，执行相关copy，或者传递到puller routine
 func (f *sendReceiveFolder) copierRoutine(in <-chan copyBlocksState, pullChan chan<- pullBlockState, out chan<- *sharedPullerState) {
 	buf := protocol.BufferPool.Get(protocol.MinBlockSize)
 	defer func() {

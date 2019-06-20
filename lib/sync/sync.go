@@ -69,6 +69,8 @@ func NewRWMutex() RWMutex {
 	return &sync.RWMutex{}
 }
 
+// 自定义了接口WaitGroup，sync.WaitGroup实现了该接口
+// WaitGroup 阻塞主线程，等待goroutine执行完成
 func NewWaitGroup() WaitGroup {
 	if debug {
 		return &loggedWaitGroup{}

@@ -17,7 +17,7 @@ import (
 )
 
 type ProgressEmitter struct {
-	registry           map[string]map[string]*sharedPullerState // folder: name: puller
+	registry           map[string]map[string]*sharedPullerState // folder: name: puller map(文件夹：map(文件名：puller))
 	interval           time.Duration
 	minBlocks          int
 	sentDownloadStates map[protocol.DeviceID]*sentDownloadState // States representing what we've sent to the other peer via DownloadProgress messages.

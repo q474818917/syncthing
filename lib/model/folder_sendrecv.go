@@ -883,6 +883,7 @@ func (f *sendReceiveFolder) deleteFileWithCurrent(file, cur protocol.FileInfo, h
 	if err == nil || fs.IsNotExist(err) {
 		// It was removed or it doesn't exist to start with
 		// 文件被删除后，放入到chan中
+		// 此处处理完后，会进去dbUpdaterRoutine方法loop中，待验证
 		dbUpdateChan <- dbUpdateJob{file, dbUpdateDeleteFile}
 		return
 	}
@@ -1621,6 +1622,7 @@ func (f *sendReceiveFolder) dbUpdaterRoutine(dbUpdateChan <-chan dbUpdateJob) {
 	found := false
 	var lastFile protocol.FileInfo
 
+	// flush触发后执行的操作
 	batch.flushFn = func(files []protocol.FileInfo) error {
 		// sync directories
 		for dir := range changedDirs {

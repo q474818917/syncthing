@@ -760,6 +760,7 @@ func (f *folder) updateLocalsFromPulling(fs []protocol.FileInfo) {
 }
 
 func (f *folder) updateLocals(fs []protocol.FileInfo) {
+	// 本地文件数据库更新文件信息
 	f.fset.Update(protocol.LocalDeviceID, fs)
 
 	filenames := make([]string, len(fs))

@@ -98,3 +98,11 @@ ls -l -k
 例如：196426字节的文件，按每块128KiB切分，第一块也就是128*1024（131072），第二块用总数-第一块（65354）
 
 ```
+### goroutine核心拉取逻辑：
++ 逻辑都在folder_sendrecv.go里
+```
+pull() -> pullerIteration() -> processNeeded() -> handleFile() 塞入 copyChan
+                  goroutine -> copierRoutine                    -> 触发 copierRoutine, 塞入pullChan
+                  goroutine -> pullerRoutine                            -> 触发 pullerRoutine，塞入finisherChan
+                  goroutine -> finisherRoutine                                 -> 触发 finisherRoutine 
+```

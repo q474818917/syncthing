@@ -18,6 +18,7 @@ import (
 // A smallIndex is an in memory bidirectional []byte to uint32 map. It gives
 // fast lookups in both directions and persists to the database. Don't use for
 // storing more items than fit comfortably in RAM.
+// 双向map，使用leveldb存储，ID(val []byte)和Val(id uint32)方法
 type smallIndex struct {
 	db     *leveldb.DB
 	prefix []byte

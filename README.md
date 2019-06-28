@@ -29,7 +29,7 @@ syncthingMain(options)
     + 3、使用global discovery
 + 建立tcp连接，执行tls握手，需要执行一些验证操作
 
-### 关于[BEP协议](doc/BEP.md), 详细的[messageType交互](doc/message exchange.md)
+### 关于[BEP协议](doc/BEP.md), 详细的[messageType交互](doc/exchange.md)
 + 核心连接监听代码：
 ```$xslt
 ①model.go

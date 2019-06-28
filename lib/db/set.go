@@ -145,7 +145,7 @@ func (s *FileSet) Update(device protocol.DeviceID, fs []protocol.FileInfo) {
 	defer s.meta.toDB(s.db, []byte(s.folder))
 
 	if device == protocol.LocalDeviceID {
-		// For the local device we have a bunch of metadata to track.
+		// For the local device we have a bunch of metadata to track. 记录一堆的meta
 		s.db.updateLocalFiles([]byte(s.folder), fs, s.meta)
 		return
 	}

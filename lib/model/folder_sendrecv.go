@@ -307,6 +307,7 @@ func (f *sendReceiveFolder) processNeeded(dbUpdateChan chan<- dbUpdateJob, copyC
 	// Regular files to pull goes into the file queue, everything else
 	// (directories, symlinks and deletes) goes into the "process directly"
 	// pile.
+	// 迭代在回调函数中执行的。普通的文件放入文件queue（事后处理），其它的"直接处理"堆中
 	f.fset.WithNeed(protocol.LocalDeviceID, func(intf db.FileIntf) bool {
 		select {
 		case <-f.ctx.Done():
@@ -405,6 +406,7 @@ func (f *sendReceiveFolder) processNeeded(dbUpdateChan chan<- dbUpdateJob, copyC
 	}
 
 	// Now do the file queue. Reorder it according to configuration.
+	// 开始处理file queue, 根据config.xml配置重排序，默认是随机
 
 	switch f.Order {
 	case config.OrderRandom:
@@ -1057,7 +1059,7 @@ func (f *sendReceiveFolder) handleFile(file protocol.FileInfo, copyChan chan<- c
 	reused := make([]int32, 0, len(file.Blocks))
 
 	// Check for an old temporary file which might have some blocks we could
-	// reuse.
+	// reuse. 检查本地的暂存文件有多少block可以重新使用
 	tempBlocks, err := scanner.HashFile(f.ctx, f.fs, tempName, file.BlockSize(), nil, false)
 	if err == nil {
 		// Check for any reusable blocks in the temp file
@@ -1100,7 +1102,7 @@ func (f *sendReceiveFolder) handleFile(file protocol.FileInfo, copyChan chan<- c
 		return
 	}
 
-	// Shuffle the blocks
+	// Shuffle the blocks, 随机变换位置
 	for i := range blocks {
 		j := rand.Intn(i + 1)
 		blocks[i], blocks[j] = blocks[j], blocks[i]

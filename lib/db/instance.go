@@ -62,6 +62,7 @@ func (db *instance) updateRemoteFiles(folder, device []byte, fs []protocol.FileI
 
 // updateLocalFiles adds fileinfos to the db, and updates the global versionlist,
 // metadata, sequence and blockmap buckets.
+// fs加入到db中，并更新全局版本列表
 func (db *instance) updateLocalFiles(folder []byte, fs []protocol.FileInfo, meta *metadataTracker) {
 	t := db.newReadWriteTransaction()
 	defer t.close()
@@ -98,7 +99,7 @@ func (db *instance) updateLocalFiles(folder []byte, fs []protocol.FileInfo, meta
 		meta.addFile(protocol.LocalDeviceID, f)
 
 		l.Debugf("insert (local); folder=%q %v", folder, f)
-		t.Put(dk, mustMarshal(&f))
+		t.Put(dk, mustMarshal(&f))	// 对应取值的t.get(dk)
 
 		gk = db.keyer.GenerateGlobalVersionKey(gk, folder, []byte(f.Name))
 		keyBuf, _ = t.updateGlobal(gk, keyBuf, folder, protocol.LocalDeviceID[:], f, meta)

@@ -38,7 +38,7 @@ func (db *instance) updateRemoteFiles(folder, device []byte, fs []protocol.FileI
 	devID := protocol.DeviceIDFromBytes(device)
 	for _, f := range fs {
 		name := []byte(f.Name)
-		dk = db.keyer.GenerateDeviceFileKey(dk, folder, device, name)
+		dk = db.keyer.GenerateDeviceFileKey(dk, folder, device, name)	//dk -> device key
 
 		ef, ok := t.getFileTrunc(dk, true)
 		if ok && unchanged(f, ef) {
@@ -53,7 +53,7 @@ func (db *instance) updateRemoteFiles(folder, device []byte, fs []protocol.FileI
 		l.Debugf("insert; folder=%q device=%v %v", folder, devID, f)
 		t.Put(dk, mustMarshal(&f))
 
-		gk = db.keyer.GenerateGlobalVersionKey(gk, folder, name)
+		gk = db.keyer.GenerateGlobalVersionKey(gk, folder, name)		// gk -> global key
 		keyBuf, _ = t.updateGlobal(gk, keyBuf, folder, device, f, meta)
 
 		t.checkFlush()

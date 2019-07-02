@@ -120,7 +120,7 @@ func (k defaultKeyer) GenerateDeviceFileKey(key, folder, device, name []byte) de
 	key[0] = KeyTypeDevice
 	binary.BigEndian.PutUint32(key[keyPrefixLen:], k.folderIdx.ID(folder))
 	binary.BigEndian.PutUint32(key[keyPrefixLen+keyFolderLen:], k.deviceIdx.ID(device))
-	copy(key[keyPrefixLen+keyFolderLen+keyDeviceLen:], name)
+	copy(key[keyPrefixLen+keyFolderLen+keyDeviceLen:], name)     	// 将name拷贝至key中，从第九位开始拷贝，长度为name的长度
 	return key
 }
 

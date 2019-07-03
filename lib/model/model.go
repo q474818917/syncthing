@@ -984,7 +984,7 @@ func (m *model) handleIndex(deviceID protocol.DeviceID, folder string, fs []prot
 	}
 
 	if running {
-		defer runner.SchedulePull()
+		defer runner.SchedulePull()		//② 后执行，SchedulePull统一都是由父类Folder方法中的SchedulePull执行
 	} else if update {
 		// Runner may legitimately not be set if this is the "cleanup" Index
 		// message at startup.
@@ -1003,7 +1003,7 @@ func (m *model) handleIndex(deviceID protocol.DeviceID, folder string, fs []prot
 		// sure they look like they weren't.
 		fs[i].LocalFlags = 0
 	}
-	files.Update(deviceID, fs)
+	files.Update(deviceID, fs)			//① 先执行，更新dk-fileInfo到数据库中，gk-versionList到数据库中
 
 	events.Default.Log(events.RemoteIndexUpdated, map[string]interface{}{
 		"device":  deviceID.String(),

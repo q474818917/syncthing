@@ -154,7 +154,7 @@ func (f *folder) Serve() {
 		case <-f.ctx.Done():
 			return
 
-		case <-f.pullScheduled:
+		case <-f.pullScheduled:		//SchedulePull方法执行会触发这里的Pull方法
 			pullFailTimer.Stop()
 			select {
 			case <-pullFailTimer.C:
